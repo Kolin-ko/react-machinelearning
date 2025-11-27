@@ -1,7 +1,10 @@
 import { useState } from "react"
 import http from "../../../utils/http"
 
-function FormPredict() {
+function FormPredict({
+    isloading, setIsloading,setPrediction
+}) {
+
     const [form, setForm] = useState({
         Pregnancies: 0,
         Glucose: 0,
@@ -22,12 +25,16 @@ function FormPredict() {
     }
     const handleSubmit = async(event) => {
         event.preventDefault()
+        setIsloading(true)
         try {
             const response = await http.post("/predict",form)
             const {data, meta} = response.data
             console.log(data);
+            setPrediction(data)
         } catch (error) {
             console.log(error);
+        }finally{
+            setIsloading(false)
         }
     }
 
@@ -65,7 +72,9 @@ function FormPredict() {
                 <input type="number" class="input" placeholder="Age" value={form.Age} name="Age" onChange={handlerOnChange} />
             </fieldset>
 
-            <button className="btn btn-neutral mt-4">Submit</button>
+            <button className="btn btn-neutral mt-4" disabled={isloading}>{
+                isloading ? "Loading..." : "Predict Diabetes"
+                }</button>
     </form>
 }
 
