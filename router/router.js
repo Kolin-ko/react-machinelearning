@@ -14,6 +14,15 @@ const router = createBrowserRouter([
                         return component.default
                     }
                 }
+            },
+            {
+                path: "/predict-rps",
+                lazy: {
+                    Component: async() =>{
+                        const component = await import("../src/pages/rps/rps-page")
+                        return component.default
+                    }
+                }
             }
         ]
     },
